@@ -11,12 +11,25 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
   std_msgs
+  message_generation
+)
+
+add_message_files(
+  FILES
+  EmgData.msg
+  EmgDataStamped.msg
+)
+
+generate_messages(
+  DEPENDENCIES
+  std_msgs
 )
 
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES tms_ss_whs1
 #  CATKIN_DEPENDS roscpp tms_msg_db tms_msg_ss
+  CATKIN_DEPENDS roscpp message_runtime
 #  DEPENDS system_lib
 )
 

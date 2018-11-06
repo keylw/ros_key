@@ -5,6 +5,11 @@
 
 
 #include <ros/ros.h>
+#include <wada_mwatch/EmgData.h>
+#include <wada_mwatch/EmgDataStamped.h>
+
+#include <time.h>
+
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/ioctl.h>
@@ -14,14 +19,15 @@
 #include <unistd.h>
 #include <string.h>
 
-#define PORT 64002
+#define PORT 9099
 
 using namespace std;
 
 class m_watch{
     private:
         int sock;
-
+	    ros::NodeHandle nh;
+    	ros::Publisher db_pub;
     public:
         int test[10]; 
         float ch1;
@@ -30,16 +36,38 @@ class m_watch{
     void spin(){
         ROS_INFO("spin");
         while(ros::ok()){
-            int recv_msg[2]; // todo change
-            int n = recv(sock, recv_msg, sizeof(recv_msg), 0);
+            double rcvmsg[2]; // todo change
+            int n = recv(sock, rcvmsg, sizeof(rcvmsg), 0);
 
             if(n<0){
 				continue;
 			}
 
-            ROS_INFO("recived a message %d ", n);
+			double emg1 = rcvmsg[0];
+			double emg2 = rcvmsg[1];
+
+            ROS_INFO("recived size %d ", n);
+            ROS_INFO("recived a message %f ", emg1);
+
+            publish_emg(rcvmsg);
+            ros::spinOnce();
+
         }
         close(sock);
+    }
+
+    void publish_emg(double emg[]){
+        wada_mwatch::EmgData data;
+        wada_mwatch::EmgDataStamped emg_msg;
+
+        ros::Time now = ros::Time::now() + ros::Duration(9*60*60); // GMT +9
+
+        emg_msg.header.stamp = now;
+        data.emg1 = emg[0];
+        data.emg2 = emg[1];
+        emg_msg.data = data;
+
+        db_pub.publish(emg_msg);
     }
 
     void setup_socket(){
@@ -58,6 +86,7 @@ class m_watch{
     }
 
     m_watch(){
+        db_pub=nh.advertise<wada_mwatch::EmgDataStamped> ("emg_data", 1000);
         setup_socket();
     }
 };
