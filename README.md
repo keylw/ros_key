@@ -2,10 +2,8 @@
 ==========
 
 ## Summary
-This is the ros packages I used for my master thesis for Confortableness evaluation using mashine learning. 
+This is the ros packages I used/created for my master thesis for Confortableness evaluation using mashine learning. 
 
-
-## ros_key
 
 ### ros_tutorial
 This package includes the tutorals I used to learn ros.
@@ -20,5 +18,7 @@ This package are used to start collection of data.
 ### wada_mwatch 
 This is the server-publisher to get the emg data from emg-client.
 
-## mini_ros_tms 
-A small version of ros_tms. Used to get Mybeat ECD data to Ros via socket.
+
+## Dependencies
+- Ros-tms
+- - We need the publisher/server for the ecg sensor. 
