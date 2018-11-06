@@ -46,7 +46,6 @@ class m_watch{
 			double emg1 = rcvmsg[0];
 			double emg2 = rcvmsg[1];
 
-            ROS_INFO("recived size %d ", n);
             ROS_INFO("recived a message %f ", emg1);
 
             publish_emg(rcvmsg);
