@@ -19,6 +19,11 @@
     <!-- <param name="image_transport" type="string" value="compressed"/> -->
   </node>
  
+
+   <rosparam param="disable_pub_plugins">
+    - 'image_transport/compressedDepth'
+    - 'image_transport/theora'
+  </rosparam>
   <!--  
    <node name="optris_binary_image_node" pkg="optris_drivers" type="optris_binary_image_node">  </node>
   -->
