@@ -1,2 +1,3 @@
-float64 emg1
-float64 emg2
+Header header
+float64 ch1_emg
+float64 ch2_emg

@@ -17,7 +17,6 @@ find_package(catkin REQUIRED COMPONENTS
 add_message_files(
   FILES
   EmgData.msg
-  EmgDataStamped.msg
 )
 
 generate_messages(
@@ -26,11 +25,7 @@ generate_messages(
 )
 
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES tms_ss_whs1
-#  CATKIN_DEPENDS roscpp tms_msg_db tms_msg_ss
   CATKIN_DEPENDS roscpp message_runtime
-#  DEPENDS system_lib
 )
 
 ###########
@@ -44,13 +39,7 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
-
 add_executable(wada_mwatch src/main.cpp)
-
-
-## Add cmake target dependencies of the executable
-## same as for the library above
-# add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(wada_mwatch

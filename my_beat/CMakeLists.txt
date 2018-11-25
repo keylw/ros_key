@@ -1,19 +1,27 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(collector)
-
+project(my_beat)
 
 find_package(catkin REQUIRED COMPONENTS
   roscpp
+  std_msgs
+  message_generation
+)
+
+add_message_files(
+  FILES
+  EcgData.msg
+)
+
+generate_messages(
+  DEPENDENCIES
+  std_msgs
 )
 
 ###################################
 ## catkin specific configuration ##
 ###################################
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES tms_ss_whs1
-#  CATKIN_DEPENDS roscpp tms_msg_db tms_msg_ss
-#  DEPENDS system_lib
+  CATKIN_DEPENDS roscpp message_runtime
 )
 
 ###########
@@ -25,3 +33,8 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
+add_executable(my_beat src/main.cpp)
+
+target_link_libraries(my_beat
+   ${catkin_LIBRARIES}
+)

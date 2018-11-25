@@ -1,12 +1,10 @@
 /*
-* This code is heavily influese by original whs_1
+* 
+* This code is heavily influese by tms/whs_1
 *
 */ 
-
-
 #include <ros/ros.h>
 #include <wada_mwatch/EmgData.h>
-#include <wada_mwatch/EmgDataStamped.h>
 
 #include <time.h>
 
@@ -19,7 +17,13 @@
 #include <unistd.h>
 #include <string.h>
 
-#define PORT 9099
+#include <cstdlib>
+#include <pthread.h>
+
+#include <boost/date_time/posix_time/posix_time.hpp>
+
+
+#define PORT 65055
 
 using namespace std;
 
@@ -29,24 +33,22 @@ class m_watch{
 	    ros::NodeHandle nh;
     	ros::Publisher db_pub;
     public:
-        int test[10]; 
         float ch1;
         float ch2;
+        bool stream_info = false;
     
     void spin(){
         ROS_INFO("spin");
+        double rcvmsg[2];
         while(ros::ok()){
-            double rcvmsg[2]; // todo change
-            int n = recv(sock, rcvmsg, sizeof(rcvmsg), 0);
 
-            if(n<0){
+            if( 1 > recv(sock, rcvmsg, sizeof(rcvmsg), 0)){
 				continue;
 			}
 
-			double emg1 = rcvmsg[0];
-			double emg2 = rcvmsg[1];
-
-            ROS_INFO("recived a message %f ", emg1);
+            if(stream_info){
+                ROS_INFO("recived a message %f and %f ", rcvmsg[0], rcvmsg[1]);
+            }
 
             publish_emg(rcvmsg);
             ros::spinOnce();
@@ -56,15 +58,14 @@ class m_watch{
     }
 
     void publish_emg(double emg[]){
-        wada_mwatch::EmgData data;
-        wada_mwatch::EmgDataStamped emg_msg;
-
+        wada_mwatch::EmgData emg_msg;
         ros::Time now = ros::Time::now() + ros::Duration(9*60*60); // GMT +9
+        std::string frame_id("/world");
 
+		emg_msg.header.frame_id = frame_id;
         emg_msg.header.stamp = now;
-        data.emg1 = emg[0];
-        data.emg2 = emg[1];
-        emg_msg.data = data;
+        emg_msg.ch1_emg = emg[0];
+        emg_msg.ch2_emg = emg[1];
 
         db_pub.publish(emg_msg);
     }
@@ -85,7 +86,7 @@ class m_watch{
     }
 
     m_watch(){
-        db_pub=nh.advertise<wada_mwatch::EmgDataStamped> ("emg_data", 1000);
+        db_pub=nh.advertise<wada_mwatch::EmgData> ("emg_data", 1000);
         setup_socket();
     }
 };

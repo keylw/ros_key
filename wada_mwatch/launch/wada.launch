@@ -1,0 +1,4 @@
+<launch>
+  <node name="emg" pkg="wada_mwatch" type="wada_mwatch">
+  </node>
+</launch>

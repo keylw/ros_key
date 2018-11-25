@@ -1,0 +1,7 @@
+<launch>
+    <arg name="name"/>
+    <arg name="loc" default="/home/key/Test/"/>
+
+    <node name="ecg_collector" pkg="collector" type="collect_ecg.py" args="$(arg loc)$(arg name)_ecg.csv" output="screen">
+    </node>
+</launch>

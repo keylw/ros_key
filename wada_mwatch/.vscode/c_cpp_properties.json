@@ -1,0 +1,23 @@
+{
+    "configurations": [
+        {
+            "browse": {
+                "databaseFilename": "",
+                "limitSymbolsToIncludedHeaders": true
+            },
+            "includePath": [
+                "/home/key/catkin_ws/devel/include",
+                "/opt/ros/kinetic/include",
+                "/home/key/catkin_ws/src/ros_key/beginner_tutorials/include",
+                "/home/key/catkin_ws/src/ros_key/collector/include",
+                "/home/key/catkin_ws/src/ros_key/my_beat/include",
+                "/home/key/catkin_ws/src/ros_key/wada_mwatch/include",
+                "/home/key/catkin_ws/src/ros_key/usb_cam/include",
+                "/usr/include"
+            ],
+            "name": "Linux",
+            "intelliSenseMode": "gcc-x64"
+        }
+    ],
+    "version": 4
+}

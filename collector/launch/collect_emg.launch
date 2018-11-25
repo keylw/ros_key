@@ -1,0 +1,8 @@
+
+<launch>
+    <arg name="name"/>
+    <arg name="loc" default="/home/key/Test/"/>
+
+    <node name="emg_collector" pkg="collector" type="collect_emg.py" args="$(arg loc)$(arg name)_emg.csv" output="screen">
+    </node>    
+</launch>
